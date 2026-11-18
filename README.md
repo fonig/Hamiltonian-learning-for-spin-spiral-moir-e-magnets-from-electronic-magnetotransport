@@ -19,7 +19,7 @@ Conductance_datasets/
         Testing_conductance_dataset_J(0.4)/  conductance maps, J = 0.4
         Testing_conductance_dataset_J(0.6)/  conductance maps, J = 0.6
         Testing_conductance_dataset_J(0.8)/  conductance maps, J = 0.8
-Training_script.ipynb                               model, one training, fidelities, prediction plots
+Main_training_script.ipynb                               model, one training, fidelities, prediction plots
 Fidelity_vs_J_test.ipynb                               fidelities as a function of J_test (Fig. 4E)
 ```
 
@@ -48,7 +48,7 @@ The conductance datasets were generated with pyqula 0.0.84.
 Start Jupyter in this folder (the one that contains `Conductance_datasets/`) and run the notebooks from top to bottom. All paths in the notebooks are relative to this folder.
 
 
-### Training_script.ipynb
+### Main_training_script.ipynb
 
 Trains one model on one dataset and tests it on the held-out test split of the same dataset.
 
