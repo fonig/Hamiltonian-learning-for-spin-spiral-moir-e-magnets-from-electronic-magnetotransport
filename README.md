@@ -1,9 +1,9 @@
 # Hamiltonian-learning-for-spin-spiral-moir-e-magnets-from-electronic-magnetotransport
-This repository contains data and scripts for generating the results of the manuscript "Hamiltonian learning for spin-spiral moiré magnets from electronic magnetotransport ".
+This repository contains the conductance data and Jupyter notebooks used to obtain the results of the manuscript “Hamiltonian learning for spin-spiral moiré magnets from electronic magnetotransport”. The notebooks train a neural network that predicts the q-vector from conductance maps and evaluate the fidelities of its predictions.
 
 Authors: Fedor Nigmatulin, Greta Lupi, Jose L. Lado, Zhipei Sun, [arXiv:2604.02959]
 
-This record contains the conductance datasets, the data shown in the figures, and two Jupyter notebooks that train the neural network which predicts the q-vector from conductance maps and evaluate the fidelities of the predictions.
+
 
 ## Contents
 
