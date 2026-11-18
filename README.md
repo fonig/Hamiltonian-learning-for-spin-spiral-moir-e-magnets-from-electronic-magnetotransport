@@ -9,7 +9,7 @@ Authors: Fedor Nigmatulin, Greta Lupi, Jose L. Lado, Zhipei Sun
 
 ```
 Conductance_datasets/
-    Full_Datasets/
+    Main_Datasets/
         q_vectors_J(0.2).txt                 q-vectors of the J = 0.2 dataset
         q_vectors_J(1.0).txt                 q-vectors of the J = 1.0 dataset
         conductance_dataset_J(0.2)/          9981 conductance maps, J = 0.2
