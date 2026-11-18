@@ -19,10 +19,8 @@ Conductance_datasets/
         Testing_conductance_dataset_J(0.4)/  conductance maps, J = 0.4
         Testing_conductance_dataset_J(0.6)/  conductance maps, J = 0.6
         Testing_conductance_dataset_J(0.8)/  conductance maps, J = 0.8
-Data_for_figures/                            data plotted in the figures 
 Training_script.ipynb                               model, one training, fidelities, prediction plots
 Fidelity_vs_J_test.ipynb                               fidelities as a function of J_test (Fig. 4E)
-README.md
 ```
 
 ## Data format
