@@ -1,5 +1,5 @@
 # Hamiltonian-learning-for-spin-spiral-moir-e-magnets-from-electronic-magnetotransport
-This repository contains the conductance data and Jupyter notebooks used to obtain the results of the manuscript [Hamiltonian learning for spin-spiral moiré magnets from electronic magnetotransport](https://arxiv.org/abs/2604.02959). The notebooks train a neural network that predicts the q-vector from conductance maps and evaluate the fidelities of its predictions.
+This repository contains the conductance data, the trained models and the Jupyter notebooks used to obtain the results of the manuscript [Hamiltonian learning for spin-spiral moiré magnets from electronic magnetotransport](https://arxiv.org/abs/2604.02959). The notebooks train a neural network that predicts the q-vector from conductance maps and evaluate the fidelities of its predictions.
 
 Authors: Fedor Nigmatulin, Greta Lupi, Jose L. Lado, Zhipei Sun
 
@@ -19,8 +19,11 @@ Conductance_datasets/
         Testing_conductance_dataset_J(0.4)/  conductance maps, J = 0.4
         Testing_conductance_dataset_J(0.6)/  conductance maps, J = 0.6
         Testing_conductance_dataset_J(0.8)/  conductance maps, J = 0.8
-Main_training_script.ipynb                               model, one training, fidelities, prediction plots
-Fidelity_vs_J_test.ipynb                               fidelities as a function of J_test (Fig. 4E)
+Trained_models/
+    model_J(1.0)/                            trained model, J = 1.0
+Main_training_script.ipynb                   model, one training, fidelities, prediction plots, saving the model
+Load_trained_model.ipynb                     loads a trained model and reproduces its predictions without retraining
+Fidelity_vs_J_test.ipynb                     fidelities as a function of J_test (Fig. 4E)
 ```
 
 ## Data format
@@ -28,9 +31,16 @@ Fidelity_vs_J_test.ipynb                               fidelities as a function 
 - **Conductance maps.** One CSV file per q-vector, named `q1_<q1>_q2_<q2>.csv` with both components written with 4 decimals. Each file has the columns `Magnetic_flux`, `Chemical_potential`, `Conductance` on a 51 x 51 grid (magnetic flux from 0 to 1, chemical potential from -4.5 to 4.5).
 - **q-vectors.** Two columns, the components (q1, q2) of the q-vector. Both components take values between 0 and 0.5.
 - **Testing q-vectors.** `testing_q_vectors.csv` lists the 805 q-vectors that belong to the test split of both the J = 0.2 and the J = 1.0 datasets (split with `test_size=0.2`, `random_state=42`, as in `train_model`). They are therefore not used in the training or validation of either model.
+- **Trained models.** Each folder `Trained_models/model_J(...)/` contains:
+    - `model.keras`: the neural network (architecture and weights), loaded with `tf.keras.models.load_model`;
+    - `preprocessing.joblib`: the fitted preprocessing steps (variance filter, standardization of the conductance maps, PCA, standardization of the q-vectors), loaded with `joblib.load`;
+    - `model_parameters.npz`: all parameters of the preprocessing steps and the network as plain NumPy arrays, a version-independent copy of the two files above (see `predict_numpy` in `Load_trained_model.ipynb`);
+    - `history.json`: training and validation loss for each epoch;
+    - `config.json`: settings used for the training, the resulting test fidelities and the package versions.
+
 ## Requirements
 
-Python 3 with numpy, pandas, scikit-learn, tensorflow (keras) and matplotlib. The results were obtained with:
+Python 3 with numpy, pandas, scikit-learn, tensorflow (keras), joblib and matplotlib. The results were obtained with:
 
 | Package | Version |
 |---|---|
@@ -39,6 +49,7 @@ Python 3 with numpy, pandas, scikit-learn, tensorflow (keras) and matplotlib. Th
 | pandas | 1.5.3 |
 | scikit-learn | 1.3.0 |
 | tensorflow | 2.19.0 |
+| joblib | [version] |
 | matplotlib | 3.7.1 |
 
 The conductance datasets were generated with pyqula 0.0.84.
@@ -50,17 +61,22 @@ Start Jupyter in this folder (the one that contains `Conductance_datasets/`) and
 
 ### Main_training_script.ipynb
 
-Trains one model on one dataset and tests it on the held-out test split of the same dataset.
-
 - **Settings** (first code cell after the imports): `J_VALUE` ("1.0" or "0.2") selects the dataset, `N_COMPONENTS` is the number of PCA components, `ETA_TRAIN` and `ETA_TEST` are the training and test noise levels.
-- **Output:** cumulative variance of the PCA components, training history, the fidelities F_|q| and F_theta, and the plots of predicted versus true |q| and theta.
+- **Output:** cumulative variance of the PCA components, training history, the fidelities F_|q| and F_theta, and the plots of predicted versus true |q| and theta. The trained model is saved to `Trained_models/model_J(<J_VALUE>)/`. Note that this overwrites the deposited model; make a copy of `Trained_models/` first if you want to keep it.
 
 Results for other noise levels or for J = 0.2 are obtained by changing the settings and running the notebook again.
+
+### Load_trained_model.ipynb
+
+Loads a trained model from `Trained_models/` and reproduces its test-set predictions and fidelities without retraining.
+
+- **Settings:** The noise levels and the seed are read from the model's `config.json`.
+- **Output:** the fidelities F_|q| and F_theta computed with the saved model (compared with the values stored in `config.json`), the plots of predicted versus true |q| and theta, and the training history.
 
 ### Fidelity_vs_J_test.ipynb
 
 Trains models at J_train = 0.2 and J_train = 1.0 and tests them on conductance maps computed with J_test = 0.2, 0.4, 0.6, 0.8 and 1.0.
 
 - **Settings:** `J_TRAIN_VALUES`, `J_TEST_VALUES`, `N_TRAININGS` (independent trainings per J_train), `ETA_TEST_J` (test noise level), `N_AVG` (test-noise realizations).
-- **Output:** `Fidelity_vs_J_test.csv` with the mean fidelities, and a plot of the mean fidelities versus J_test.
-- **Settings used for Fig. 4E:** `N_TRAININGS = 60`, `N_AVG = 10`, `ETA_TEST_J = 0.05`. For each trained model the predictions are averaged over the `N_AVG` test-noise realizations and the fidelities are computed from the averaged prediction; the fidelities are then averaged over the trainings.
+- **Output:** The mean fidelities versus J_test
+- **Settings used for Fig. 4E:** `N_TRAININGS = 60`, `N_AVG = 10`, `ETA_TEST_J = 0.05`. For each trained model the predictions are averaged over the `N_AVG` test-noise realizations and then the fidelities are averaged over the trainings.
