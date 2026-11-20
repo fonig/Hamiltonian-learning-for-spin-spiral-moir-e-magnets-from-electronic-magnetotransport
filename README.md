@@ -61,8 +61,8 @@ Start Jupyter in this folder (the one that contains `Conductance_datasets/`) and
 
 ### Main_training_script.ipynb
 
-- **Settings** (first code cell after the imports): `J_VALUE` ("1.0" or "0.2") selects the dataset, `N_COMPONENTS` is the number of PCA components, `ETA_TRAIN` and `ETA_TEST` are the training and test noise levels.
-- **Output:** cumulative variance of the PCA components, training history, the fidelities F_|q| and F_theta, and the plots of predicted versus true |q| and theta. The trained model is saved to `Trained_models/model_J(<J_VALUE>)/`. Note that this overwrites the deposited model; make a copy of `Trained_models/` first if you want to keep it.
+- **Settings** `J_VALUE` ("1.0" or "0.2") selects the dataset, `N_COMPONENTS` is the number of PCA components, `ETA_TRAIN` and `ETA_TEST` are the training and test noise levels.
+- **Output:** cumulative variance of the PCA components, training history, the fidelities F_|q| and F_theta, and the plots of predicted versus true |q| and theta. The trained model is saved to `Trained_models/model_J(<J_VALUE>)/`. 
 
 Results for other noise levels or for J = 0.2 are obtained by changing the settings and running the notebook again.
 
@@ -78,5 +78,5 @@ Loads a trained model from `Trained_models/` and reproduces its test-set predict
 Trains models at J_train = 0.2 and J_train = 1.0 and tests them on conductance maps computed with J_test = 0.2, 0.4, 0.6, 0.8 and 1.0.
 
 - **Settings:** `J_TRAIN_VALUES`, `J_TEST_VALUES`, `N_TRAININGS` (independent trainings per J_train), `ETA_TEST_J` (test noise level), `N_AVG` (test-noise realizations).
-- **Output:** The mean fidelities versus J_test
+- **Output:** The mean fidelities versus J_test.
 - **Settings used for Fig. 4E:** `N_TRAININGS = 60`, `N_AVG = 10`, `ETA_TEST_J = 0.05`. For each trained model the predictions are averaged over the `N_AVG` test-noise realizations and then the fidelities are averaged over the trainings.
